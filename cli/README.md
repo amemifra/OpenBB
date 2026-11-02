@@ -47,6 +47,15 @@ Multi-provider Pydantic models and the `OBBject` envelope are OpenBB Platform co
 
 Everything else — `--list-commands`, `--describe COMMAND`, `--batch`, headers/query auth, spec generation, REPL playback — works identically against both kinds of upstream.
 
+## Supported scope and limits
+
+- **Python 3.11 and newer** (`requires-python = ">=3.11,<4"`).
+- **OpenAPI documents only.** The CLI reads OpenAPI 3.x documents; it also accepts Swagger 2 documents, and specs embedded in HTML pages. APIs with no machine-readable description (GraphQL, gRPC, SOAP, plain HTML endpoints) are not supported.
+- **Only GET and POST operations become commands.** PUT, PATCH, DELETE and other methods in an upstream spec are skipped, both for dispatch and for `--generate-extension`. Generated extensions contain GET fetchers and, for POST operations with a JSON body, local-compute POST commands.
+- **OpenBB-specific features need an OpenBB upstream.** The per-provider `--describe`, per-provider flag filtering and the `OBBject` envelope work only against an OpenBB Platform backend (see the table above). Generic OpenAPI servers get the flat behaviour.
+- **Providers are not bundled with the CLI.** Examples such as `--provider oecd` or `--provider fmp` need that provider's package installed in the same environment, plus its credentials where the provider requires them.
+- **Auth is limited to what you pass in.** That means static headers (`-H`), query parameters (`-Q`, `OPENBB_HTTP_QUERY_*`) or your own auth hook. The CLI does not run OAuth login flows for you.
+
 ## Installation
 
 ```bash

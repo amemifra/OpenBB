@@ -94,6 +94,19 @@ Sign-in to the [OpenBB Workspace](https://pro.openbb.co/), and follow the follow
 
 That's it.
 
+### Supported scope and limits
+
+What this repository ships, and what it does not:
+
+- **Python 3.11 and newer.** The packages declare `requires-python = ">=3.11,<4"`; CI tests 3.11 to 3.14 on Linux, and 3.11 and 3.14 on macOS and Windows. Older Python versions are not supported.
+- **Bundled data providers** live in `openbb_platform/providers`: bls, cboe, cftc, deribit, ecb, eia, famafrench, federal_reserve, finra, fred, government_us, imf, jodi, nasdaq, oecd, sec and tmx. Other providers named in examples or in the documentation site (for example `fmp`) are separate packages that you install on their own.
+- **Credentials are yours to supply.** Some bundled providers only work with your own key from the data source: bls (`api_key`), cftc (`app_token`), eia (`api_key`) and fred (`api_key`). ODP does not issue or include keys.
+- **Data quality and availability depend on each upstream source.** ODP passes data through from the providers and does not guarantee accuracy, completeness or uptime (see the [Disclaimer](#4-disclaimer)).
+- **OpenBB Workspace is a separate product.** The Workspace UI at pro.openbb.co is not part of this repository; ODP only provides the backend it connects to.
+- **The API server binds to localhost and runs without authentication by default** (`127.0.0.1:6900`). HTTP Basic auth is opt-in (`OPENBB_API_AUTH=true` plus a username and password), or comes from an auth extension (`OPENBB_API_AUTH_EXTENSION`). This repository does not provide hosted deployment or multi-tenant isolation.
+
+The CLI and desktop app document their own limits in [cli/README.md](cli/README.md#supported-scope-and-limits) and [desktop/README.md](desktop/README.md#supported-scope-and-limits).
+
 ---
 
 <!-- TABLE OF CONTENTS -->
