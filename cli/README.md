@@ -47,6 +47,36 @@ Multi-provider Pydantic models and the `OBBject` envelope are OpenBB Platform co
 
 Everything else — `--list-commands`, `--describe COMMAND`, `--batch`, headers/query auth, spec generation, REPL playback — works identically against both kinds of upstream.
 
+## Scope and Limitations
+
+What the CLI supports today, and what it does not — so scripts and agents aren't built on capabilities that don't exist yet:
+
+**Supported:**
+
+- One-shot dispatch, `--batch` NDJSON mode, and the interactive REPL (`openbb -i`).
+- Four backend sources: the in-process `obb` namespace, an OpenBB Platform server, a generated `.spec` file, and any OpenAPI 3.x server.
+- Spec generation from an OpenAPI description (`--generate-spec`), with `--api-prefix` path-prefix renaming and OpenAPI Overlay documents (`--overlay`) applied before the spec is built.
+- Extension generation from a spec (`--generate-extension`): provider + fetcher packages for GET and POST operations, installable and registrable with `openbb-build`.
+- Static auth (headers via `-H`, query params via `-Q`, `OPENBB_HTTP_QUERY_<NAME>` env vars) and callable auth hooks configured in TOML (`auth-hook`), including per-namespace scoping and RBAC-style `AccessDenied` short-circuits.
+- Layered TOML configuration in the documented precedence order, with `--print-config-template` and `--show-config`.
+
+**Known limitations:**
+
+- The in-process backend pays the `import openbb` cold-start cost (~2s); only the `.spec` and server backends avoid it.
+- Generic OpenAPI upstreams get no OpenBB-specific affordances — no `OBBject` envelope, no per-provider narrowing, no `obb.reference` menu tree. Whatever the upstream publishes is the truth.
+- The generic upstream's command surface is only as good as its OpenAPI document: external `$ref`s that aren't resolvable inline fail spec generation, and endpoints the document describes poorly are dispatched poorly.
+- Auth hooks must be importable `module:attribute` callables on the same Python environment as the CLI; there is no remote hook mechanism.
+- `--generate-spec` requires `--server URL` (or `OPENBB_SERVER_URL`); there is no offline spec source other than an already-generated `.spec` file.
+
+**Unsupported use cases:**
+
+- Running the CLI itself as a daemon/server — batch mode reads stdin, it does not listen on a port.
+- Mutating OpenAPI documents after generation other than through Overlay actions; hand-edits to a `.spec` are used as-is and not validated against the upstream.
+- Non-OpenAPI API descriptions (GraphQL, gRPC, SOAP) — no converter is provided.
+- Secrets management beyond static TOML/env values and importable hooks — no built-in vault integration.
+
+Roadmap items and future plans are tracked in the project's issue tracker, not in this README; anything not listed under **Supported** above should be assumed not implemented.
+
 ## Installation
 
 ```bash
