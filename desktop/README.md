@@ -9,6 +9,22 @@ The distributed binaries (currently macOS and Windows) are the direct output of 
 
 Please note that while there are no build pipelines for a Linux distribution, it is possible to build and install locally.
 
+## Supported scope and limits
+
+Release binaries are produced only for the platforms covered by the `build-desktop-*.yml` workflows in this repository:
+
+- macOS x64 (`build-desktop-osx64.yml`)
+- macOS ARM (`build-desktop-osxARM.yml`)
+- Windows x64 (`build-desktop-win64.yml`)
+
+There is no release pipeline for Linux; Linux users must build and install locally.
+
+What the app is: a tray icon / background service and GUI wrapper around the operating system and command line, providing a production-ready REST API, MCP server, NodeJS, and Jupyter Lab IDE in its initial installation environment.
+
+What the app is not: it does not install developer tools with admin/root access, and it is not a system-wide installation — multi-user machines must be configured per-user.
+
+First run: Miniforge is installed on first launch (network access is required for this), and the environment is configured per user.
+
 ## User Documentation & Installation
 
 Official user documentation is located [here](https://docs.openbb.co/desktop).
