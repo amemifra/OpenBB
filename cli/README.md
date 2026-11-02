@@ -47,6 +47,16 @@ Multi-provider Pydantic models and the `OBBject` envelope are OpenBB Platform co
 
 Everything else — `--list-commands`, `--describe COMMAND`, `--batch`, headers/query auth, spec generation, REPL playback — works identically against both kinds of upstream.
 
+## Supported scope and limits
+
+The CLI reads OpenAPI 3.x descriptions — from a live `--server URL`, a generated `.spec` file, or the in-process `obb` namespace — and turns each operation into a command. Only **GET** and **POST** operations become commands (`dispatchers/spec.py` iterates `("get", "post")` per path); other methods (PUT, PATCH, DELETE) are ignored.
+
+Other limits to keep in mind:
+
+* **Providers and credentials are not bundled.** The CLI ships no data providers and no API keys; bring your own via `-H`/`-Q` flags, `OPENBB_HTTP_QUERY_*` env vars, TOML config, or the standard OpenBB user-settings flow.
+* **OpenBB-specific affordances need an OpenBB upstream.** The `OBBject` envelope, per-provider `--describe`, per-provider argparse narrowing, and the `obb.reference` REPL menu tree only appear when the upstream exposes a `provider` discriminator parameter (see the table under [Backends](#backends)). Against a generic OpenAPI server the CLI treats the upstream's response as-is.
+* **Spec-driven backends are read-only snapshots.** A `.spec` file reflects the upstream at generation time; regenerate it when the upstream changes.
+
 ## Installation
 
 ```bash
