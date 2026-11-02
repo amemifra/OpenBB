@@ -110,6 +110,16 @@ That's it.
   </ol>
 </details>
 
+## Supported scope and limits
+
+- **Python versions:** ODP requires Python `>=3.11,<4` (Python 3.11 or newer, below 4.0).
+- **Bundled providers:** the platform ships with the following providers out of the box: `bls`, `cboe`, `cftc`, `deribit`, `ecb`, `eia`, `famafrench`, `federal_reserve`, `finra`, `fred`, `government_us`, `imf`, `jodi`, `nasdaq`, `oecd`, `sec`, `tmx`.
+- **Providers requiring user credentials:** `bls`, `cftc`, `eia`, and `fred` need API keys supplied by the user before their data can be accessed.
+- **OpenBB Workspace:** OpenBB Workspace is a separate product and is not bundled with this repository; it connects to an ODP backend as a client.
+- **API server:** the REST API server binds by default to `127.0.0.1:6900` and, unless an auth extension is installed, uses the default auth hook which checks credentials against the `OPENBB_API_USERNAME` and `OPENBB_API_PASSWORD` environment variables (no authentication is enforced when those variables are unset).
+
+---
+
 ## 1. Installation
 
 The ODP Python Package can be installed from [PyPI package](https://pypi.org/project/openbb/) by running `pip install openbb`
