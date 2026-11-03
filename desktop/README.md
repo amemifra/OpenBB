@@ -9,6 +9,16 @@ The distributed binaries (currently macOS and Windows) are the direct output of 
 
 Please note that while there are no build pipelines for a Linux distribution, it is possible to build and install locally.
 
+## Supported scope and limits
+
+- **Release binaries exist for macOS (Intel and Apple Silicon) and Windows (x64) only.** These are the platforms with build workflows in `.github/workflows/build-desktop-*.yml`. Unit tests also run on Windows ARM, but no Windows ARM binary is published.
+- **Linux is build-it-yourself.** There is no Linux release pipeline or published binary; you can build locally (see [Running Code](#running-code)), but Linux builds are not tested in CI.
+- **Signed production builds need the official release workflows.** Builds made outside them are unsigned and may need changes to `beforeBundleCommand`.
+- **The app is a tray launcher and environment manager, not a data UI.** The REST API, MCP server, NodeJS and Jupyter Lab run inside the Miniforge environment it installs. Charts and dashboards come from those tools or from OpenBB Workspace, not from the app itself.
+- **It needs network access on first run** to download Miniforge and the ODP packages. There is no offline installer.
+- **Each user sets it up separately.** On machines with several accounts, every user installs their own environment; there is no shared, machine-wide install.
+- **The development server only works inside the Tauri window.** Opening it in a regular browser leaves features that depend on the Tauri runtime broken; that is expected and not supported.
+
 ## User Documentation & Installation
 
 Official user documentation is located [here](https://docs.openbb.co/desktop).
